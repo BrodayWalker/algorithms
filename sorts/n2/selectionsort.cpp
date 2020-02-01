@@ -15,6 +15,7 @@ using namespace std;
 
 const int N = 10;
 
+void selectionsort(vector<int> &);
 void printVector(const vector<int> &);
 
 int main()
@@ -29,9 +30,35 @@ int main()
     cout << "Original: ";
     printVector(ray);
 
+    selectionsort(ray);
 
+    cout << "Sorted: ";
+    printVector(ray);
 
     return 0;
+}
+
+void selectionsort(vector<int> &A)
+{
+    int smallest, small_index, temp;
+    for (int i = 0; i < A.size(); i++)
+    {
+        smallest = A[i];
+        small_index = i;
+        for (int j = i; j < A.size(); j++)
+        {
+            // Find smallest value
+            if(A[j] < smallest)
+            {
+                smallest = A[j];
+                small_index = j;
+            }
+        }
+        // Swap smallest value of the sub-vector to its proper place
+        temp = A[i];
+        A[i] = A[small_index];
+        A[small_index] = temp;
+    }
 }
 
 void printVector(const vector<int> &A)
