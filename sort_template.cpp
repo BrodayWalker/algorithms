@@ -13,6 +13,7 @@
 
 using namespace std;
 
+// Change N to desired vector size
 const int N = 10;
 
 void printVector(const vector<int> &);
@@ -29,7 +30,14 @@ int main()
     cout << "Original: ";
     printVector(ray);
 
-
+    /***********************************************************************
+     * 
+     * Call sorting algorithm here
+     * 
+     ***********************************************************************/
+    
+    cout << "Sorted: ";
+    printVector(ray);
 
     return 0;
 }
