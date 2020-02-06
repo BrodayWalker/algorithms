@@ -20,7 +20,7 @@ const int N = 10;
 const int BIGGEST = 10;
 
 
-void countingsort(const vector<int> &, vector<int> &);
+void countingsort(vector<int> &, vector<int> &);
 void printVector(const vector<int> &);
 
 int main()
@@ -48,14 +48,23 @@ int main()
     
     cout << "Counts: ";
     printVector(counts);
+    cout << "Sorted: ";
+    printVector(ray);
 
     return 0;
 }
 
-void countingsort(const vector<int> &A, vector<int> &counts)
+void countingsort(vector<int> &A, vector<int> &counts)
 {
+    // Count the frequency of each number
     for(int i = 0; i < A.size(); i++)
         counts[A[i]]++;
+
+    int k = 0;
+    // Transfer numbers in ascending order
+    for(int i = 0; i < counts.size(); i++)
+        for (int j = 0; j < counts[i]; j++)
+            A[k++] = i;
 }
 
 void printVector(const vector<int> &A)
