@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    Hash test(30);
+    Hash test(31);
 
     test.insertAux(3);
     test.insertAux(9);
