@@ -13,6 +13,13 @@ int main()
     test.insertAux(44);
     test.insertAux(123);
     test.insertAux(99);
+    
+    // Testing wrap
+    test.insertAux(154);
+    test.insertAux(154);
+    test.insertAux(154);
+    test.insertAux(154);
+
 
     test.Print_Table();
 

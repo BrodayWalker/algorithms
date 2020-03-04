@@ -38,6 +38,7 @@ int Hash::Lin_Probe(int key)
 {
     // num_probes is not implemented yet
     int loc, num_probes = 1;
+    bool inserted = false;
 
     // Get the location of the key in the table
     loc = Mod_Hash(key, table_size);
@@ -58,17 +59,19 @@ int Hash::Lin_Probe(int key)
         // table is full
         // The loop stops when the key has been inserted or the table has been
         // found to be full
-        if (num_probes <= table_size)
+        while (num_probes <= table_size && inserted == false)
         {
+            int next = (loc + num_probes) % table_size;
             // If the element is open, insert the key
-            if (table[loc + num_probes] == INT_MIN) 
-                table[loc + num_probes] = key;
-            
+            if (table[next] == INT_MIN) 
+            {
+                table[next] = key;
+                inserted = true;
+            }
             num_probes++;
         }
     }
     
-
     return num_probes;
 }
 
