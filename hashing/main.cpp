@@ -6,9 +6,13 @@ using namespace std;
 
 int main()
 {
-    Hash test(20);
+    Hash test(30);
 
+    test.insertAux(3);
+    test.insertAux(9);
+    test.insertAux(44);
 
+    test.Print_Table();
 
 
     return 0;
