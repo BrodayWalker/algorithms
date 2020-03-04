@@ -44,12 +44,30 @@ int Hash::Lin_Probe(int key)
 
     //**********************************************************************************************
     // This is just for testing
-    // There is no real collision resolution policy in place yet
+    // There is no way to keep track of the number of probes yet
+    // The linear probing collision policy does work, though
     //**********************************************************************************************
 
     // Try to insert the key into the table
-    if (key > INT_MIN)
+    // If true, the element holds a default value (safe to insert)
+    if (table[loc] == INT_MIN)
         table[loc] = key;
+    else 
+    {
+        // If num_probes exceeds the table size, it is safe to assume the 
+        // table is full
+        // The loop stops when the key has been inserted or the table has been
+        // found to be full
+        if (num_probes <= table_size)
+        {
+            // If the element is open, insert the key
+            if (table[loc + num_probes] == INT_MIN) 
+                table[loc + num_probes] = key;
+            
+            num_probes++;
+        }
+    }
+    
 
     return num_probes;
 }

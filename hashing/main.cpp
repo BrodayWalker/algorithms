@@ -11,6 +11,8 @@ int main()
     test.insertAux(3);
     test.insertAux(9);
     test.insertAux(44);
+    test.insertAux(123);
+    test.insertAux(99);
 
     test.Print_Table();
 
