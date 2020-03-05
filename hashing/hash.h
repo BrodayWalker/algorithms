@@ -12,7 +12,7 @@ class Hash {
 
     public:
         Hash(int = 0);
-        void insertAux(int);
+        void insert(int);
         void Print_Table();
 
 

@@ -26,7 +26,7 @@ Hash::Hash(int size)
 }
 
 // Insert accepts an integer value to insert into the table
-void Hash::insertAux(int key)
+void Hash::insert(int key)
 { 
     int lin_probes;
     lin_probes = Lin_Probe(key); 
