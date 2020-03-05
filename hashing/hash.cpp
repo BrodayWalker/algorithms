@@ -15,21 +15,32 @@ using namespace std;
 Hash::Hash(int size) 
 {
     // Dynamically allocate a hash table of size passed to the constructor
-    table = new int[size];
-
-    // Set all values in the table to INT_MIN as default
-    for (int i = 0; i < size; i++)
-        table[i] = INT_MIN;
+    if (size > 0)
+    {
+        table = new int[size];
+        // Set all values in the table to INT_MIN as default
+        for (int i = 0; i < size; i++)
+            table[i] = INT_MIN;
+    } 
+    else
+        table = nullptr;
 
     // Save table size for convenience
     table_size = size;
 }
 
-// Insert accepts an integer value to insert into the table
-void Hash::insert(int key)
+// Insert accepts an integer value to insert into the table along with
+// a collision resolution policy
+int Hash::insert(int key, CRP policy)
 { 
-    int lin_probes;
-    lin_probes = Lin_Probe(key); 
+    int probes;
+    
+    if (policy == LINEAR_PROBE)
+        probes = Lin_Probe(key); 
+    else if (policy == DOUBLE_PROBE)
+        probes = Double_Probe(key);
+
+    return probes;
 }
 
 // Lin_Probe inserts a key using linear probing as the collision resolution
@@ -73,6 +84,18 @@ int Hash::Lin_Probe(int key)
     }
     
     return num_probes;
+}
+
+// Just a placeholder for now; no actual functionality
+int Hash::Double_Probe(int key)
+{
+    int probes;
+
+    // ***** Just a placeholder
+    probes = -1;
+    // *****
+
+    return probes;
 }
 
 // Hash function: key % N where key is an integer value to be 
