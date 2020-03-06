@@ -47,18 +47,11 @@ int Hash::insert(int key, CRP policy)
 // policy
 int Hash::Lin_Probe(int key)
 {
-    // num_probes is not implemented yet
     int loc, num_probes = 1;
     bool inserted = false;
 
     // Get the location of the key in the table
     loc = Mod_Hash(key, table_size);
-
-    //**********************************************************************************************
-    // This is just for testing
-    // There is no way to keep track of the number of probes yet
-    // The linear probing collision policy does work, though
-    //**********************************************************************************************
 
     // Try to insert the key into the table
     // If true, the element holds a default value (safe to insert)
@@ -89,13 +82,41 @@ int Hash::Lin_Probe(int key)
 // Just a placeholder for now; no actual functionality
 int Hash::Double_Probe(int key)
 {
-    int probes;
+    int loc, num_probes = 1;
+    bool inserted = false;
 
-    // ***** Just a placeholder
-    probes = -1;
-    // *****
+    // Get the location of the key in the table
+    loc = Mod_Hash(key, table_size);
 
-    return probes;
+    // Try to insert the key into the table
+    // If true, the element holds a default value (safe to insert)
+    if (table[loc] == INT_MIN)
+        table[loc] = key;
+    else 
+    {
+        // If num_probes exceeds the table size, it is safe to assume the 
+        // table is full
+        // The loop stops when the key has been inserted or the table has been
+        // found to be full
+
+        // Find the increment (last digit of the key + 1)
+        int inc = (key % 10) + 1;
+        int next = (loc + inc) % table_size;
+        while (num_probes <= table_size && inserted == false)
+        {
+            // If the element is open, insert the key
+            if (table[next] == INT_MIN) 
+            {
+                table[next] = key;
+                inserted = true;
+            }
+            // Find next location to try to insert in
+            next = (next + inc) % table_size;
+            num_probes++;
+        }
+    }
+    
+    return num_probes;
 }
 
 // Hash function: key % N where key is an integer value to be 
