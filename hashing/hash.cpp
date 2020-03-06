@@ -130,7 +130,16 @@ void Hash::Print_Table()
 {
     for (int i = 0; i < table_size; i++)
         cout << "Element " << i << ": " << table[i] << '\n';
+    cout << '\n';
 }
+
+// make_clean resets the table so all elements hold the value of INT_MIN
+void Hash::make_clean()
+{
+    for (int i = 0; i < table_size; i++)
+        table[i] = INT_MIN;
+}
+
 
 // Destructor
 Hash::~Hash()
