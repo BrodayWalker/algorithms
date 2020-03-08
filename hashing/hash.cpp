@@ -8,6 +8,7 @@
 #include "hash.h"
 #include <iostream>
 
+
 using namespace std;
 
 // Default constructor accepts an integer for the size of the array to be
@@ -20,7 +21,7 @@ Hash::Hash(int size)
         table = new int[size];
         // Set all values in the table to INT_MIN as default
         for (int i = 0; i < size; i++)
-            table[i] = INT_MIN;
+            table[i] = INT32_MIN;
     } 
     else
         table = nullptr;
@@ -55,7 +56,7 @@ int Hash::Lin_Probe(int key)
 
     // Try to insert the key into the table
     // If true, the element holds a default value (safe to insert)
-    if (table[loc] == INT_MIN)
+    if (table[loc] == INT32_MIN)
         table[loc] = key;
     else 
     {
@@ -67,7 +68,7 @@ int Hash::Lin_Probe(int key)
         {
             int next = (loc + num_probes) % table_size;
             // If the element is open, insert the key
-            if (table[next] == INT_MIN) 
+            if (table[next] == INT32_MIN) 
             {
                 table[next] = key;
                 inserted = true;
@@ -90,7 +91,7 @@ int Hash::Double_Probe(int key)
 
     // Try to insert the key into the table
     // If true, the element holds a default value (safe to insert)
-    if (table[loc] == INT_MIN)
+    if (table[loc] == INT32_MIN)
         table[loc] = key;
     else 
     {
@@ -105,7 +106,7 @@ int Hash::Double_Probe(int key)
         while (num_probes <= table_size && inserted == false)
         {
             // If the element is open, insert the key
-            if (table[next] == INT_MIN) 
+            if (table[next] == INT32_MIN) 
             {
                 table[next] = key;
                 inserted = true;
@@ -137,7 +138,7 @@ void Hash::Print_Table()
 void Hash::make_clean()
 {
     for (int i = 0; i < table_size; i++)
-        table[i] = INT_MIN;
+        table[i] = INT32_MIN;
 }
 
 
