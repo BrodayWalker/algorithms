@@ -2,17 +2,27 @@
 //	Broday Walker
 //	Dr. Halverson
 //	CMPS 5243-201
-//	
+//	March 10, 2020
+//  hash.cpp includes all methods implemented and used by the hash class.
 //***************************************************************************
 
 #include "hash.h"
 #include <iostream>
-
+#include <fstream>
+#include <iomanip>
+#include <vector>
 
 using namespace std;
 
-// Default constructor accepts an integer for the size of the array to be
-// dynamically allocated. The default value is 0.
+//***************************************************************************
+//  method: Hash
+//  arguments: none or an integer 
+//  returns: none
+//  description: This default constructor dynamically allocates a new hash 
+//  table. The value passed to the constructor is used as the size of the new
+//  hash table if that value is greater than 0. If no value is passed to the
+//  constructor, it defaults to 0, in which case a table is not created.
+//***************************************************************************
 Hash::Hash(int size) 
 {
     // Dynamically allocate a hash table of size passed to the constructor
@@ -30,8 +40,16 @@ Hash::Hash(int size)
     table_size = size;
 }
 
-// Insert accepts an integer value to insert into the table along with
-// a collision resolution policy
+//***************************************************************************
+//  method: insert
+//  arguments: int, CRP
+//  returns: integer number of probes
+//  description: The insert method accepts a key to insert into the hash
+//  table and a Collision Resolution Policy (CRP). The CRP is used to
+//  to invoke the proper auxiliary insertion method. The insert method will
+//  either invoke Lin_Probe when LINEAR_PROBE is passed or Double_Probe when
+//  DOUBLE_PROBE is passed.
+//***************************************************************************
 int Hash::insert(int key, CRP policy)
 { 
     int probes;
@@ -44,8 +62,14 @@ int Hash::insert(int key, CRP policy)
     return probes;
 }
 
-// Lin_Probe inserts a key using linear probing as the collision resolution
-// policy
+//***************************************************************************
+//  method: Lin_Probe
+//  arguments: int
+//  returns: integer number of probes
+//  description: The Lin_Probe method accepts an integer key passed from the
+//  insert method. Lin_Probe inserts the key into the hash table using linear
+//  probing as a collision resolution policy.
+//***************************************************************************
 int Hash::Lin_Probe(int key)
 {
     int loc, num_probes = 1;
@@ -80,7 +104,14 @@ int Hash::Lin_Probe(int key)
     return num_probes;
 }
 
-// Just a placeholder for now; no actual functionality
+//***************************************************************************
+//  method: Double_Probe
+//  arguments: int
+//  returns: integer number of probes
+//  description: The Double_Probe method accepts an integer key from the
+//  insert method. Double_Probe inserts the key into the hash table using
+//  double hashing as the collision resolution policy.
+//***************************************************************************
 int Hash::Double_Probe(int key)
 {
     int loc, num_probes = 1;
@@ -120,29 +151,60 @@ int Hash::Double_Probe(int key)
     return num_probes;
 }
 
-// Hash function: key % N where key is an integer value to be 
-// inserted into the hash table and N is the size of the hash table
-// Returns the location the value hashed to in the table
+//***************************************************************************
+//  method: Mod_Hash
+//  arguments: int, int
+//  returns: integer value representing a location in the hash table
+//  description: The Mod_Hash method implements a simple hashing algorithm
+//  by performing a modulus operation on the integer key value using the size
+//  of the table. The result of this calculation represents the location to
+//  which the key maps to in the table if no collision occurs upon insertion.
+//***************************************************************************
 int Hash::Mod_Hash(int key, int N)
 { return key % N; }
 
-// Prints the table
-void Hash::Print_Table()
+//***************************************************************************
+//  method: Print_Table
+//  arguments: ofstream &
+//  returns: void
+//  description: The Print_Table method accepts an ofstream object passed by
+//  reference. The method prints the contents of the table to the output
+//  file.
+//***************************************************************************
+void Hash::Print_Table(ofstream &outfile)
 {
+    // Print Headings
+    outfile << setw(12) << "Location" << setw(13) << "Value" << '\n';
+    outfile << "===============================\n";
+
+    // Print body
     for (int i = 0; i < table_size; i++)
-        cout << "Element " << i << ": " << table[i] << '\n';
-    cout << '\n';
+        outfile << setw(12) << i << setw(13) << table[i] << '\n';
+    outfile << "===============================\n\n\n";
 }
 
-// make_clean resets the table so all elements hold the value of INT_MIN
+//***************************************************************************
+//  method: make_clean
+//  arguments: none
+//  returns: void
+//  description: The make_clean method traverses the hash table resetting
+//  all values to INT32_MIN. When the method has completed, the hash table
+//  will be in the same state as a new Hash object of size table_size.
+//***************************************************************************
 void Hash::make_clean()
 {
+    // Reset all values
     for (int i = 0; i < table_size; i++)
         table[i] = INT32_MIN;
 }
 
-
-// Destructor
+//***************************************************************************
+//  method: ~Hash
+//  arguments: none
+//  returns: none
+//  description: The Hash class destructor frees the memory allocated to the
+//  hash table upon destruction of the class.
+//***************************************************************************
 Hash::~Hash()
 {
     // Free the memory allocated for the table

@@ -1,5 +1,12 @@
+//***************************************************************************
+//	Broday Walker
+//	Dr. Halverson
+//	CMPS 5243-201
+//	March 10, 2020
+//***************************************************************************
 #pragma once
-#include <iostream>
+#include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -13,11 +20,9 @@ class Hash {
 
     public:
         enum CRP {LINEAR_PROBE, DOUBLE_PROBE};
-        
         Hash(int = 0);
         int insert(int, CRP);
-        void Print_Table();
+        void Print_Table(ofstream &);
         void make_clean();
-
         ~Hash();
 };
