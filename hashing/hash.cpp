@@ -86,8 +86,8 @@ int Hash::Lin_Probe(int key)
     {
         // If num_probes exceeds the table size, it is safe to assume the 
         // table is full
-        // The loop stops when the key has been inserted or the table has been
-        // found to be full
+        // The loop stops when the key has been inserted or the table has 
+        // been found to be full
         while (num_probes <= table_size && inserted == false)
         {
             int next = (loc + num_probes) % table_size;
@@ -128,8 +128,8 @@ int Hash::Double_Probe(int key)
     {
         // If num_probes exceeds the table size, it is safe to assume the 
         // table is full
-        // The loop stops when the key has been inserted or the table has been
-        // found to be full
+        // The loop stops when the key has been inserted or the table has 
+        // been found to be full
 
         // Find the increment (last digit of the key + 1)
         int inc = (key % 10) + 1;
