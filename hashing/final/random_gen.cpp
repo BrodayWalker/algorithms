@@ -25,6 +25,7 @@ int main()
     // Two unordered sets are used
     unordered_set<int> small_set;
     unordered_set<int> big_set;
+    int linebreak = 0;
 
     // Open the output files
     ofstream random205, random250;
@@ -42,6 +43,13 @@ int main()
     for (int i = 0; i < 250; i++)
         big_set.insert(rand() % 5000);
 
+    // Sanity check: print the size of each set to the console
+    // If the sizes are too small, more random numbers will be generated
+    // and added to the appropriate set(s).
+    cout << "Sizes after initial insertions:\n";
+    cout << "Size of small set (should be 205): " << small_set.size() << '\n';
+    cout << "Size of big set (should be 250): " << big_set.size() << '\n';
+
     // If there were any duplicate numbers, the size of the small set
     // will be less than 205. Insert random numbers until the set size
     // is 205.
@@ -54,14 +62,27 @@ int main()
     while (big_set.size() < 250)
         big_set.insert(rand() % 5000);
 
+    // Sanity check: print the size of each set to the console
+    cout << "Sizes after filling in sets where necessary:\n";
+    cout << "Size of small set (should be 205): " << small_set.size() << '\n';
+    cout << "Size of big set (should be 250): " << big_set.size() << '\n';
+
     // Transfer the random numbers to the output files
     for (auto itor : small_set)
+    {
         random205 << itor << " ";
+        if (++linebreak % 10 == 0)
+            random205 << '\n';
+    }
 
+    linebreak = 0;
     for (auto itor : big_set)
+    {
         random250 << itor << " ";
+        if (++linebreak % 10 == 0)
+            random250 << '\n';
+    }
 
-    
     random205.close();
     random250.close();
 
