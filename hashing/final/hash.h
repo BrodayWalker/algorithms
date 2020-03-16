@@ -10,8 +10,11 @@
 
 using namespace std;
 
+enum CRP {LINEAR_PROBE, DOUBLE_PROBE};
+
 class Hash {
     private:
+        CRP policy;
         int table_size;
         int *table;
         int Lin_Probe(int);
@@ -19,9 +22,9 @@ class Hash {
         int Mod_Hash(int, int);
 
     public:
-        enum CRP {LINEAR_PROBE, DOUBLE_PROBE};
-        Hash(int = 0);
-        int insert(int, CRP);
+        Hash(int = 0, CRP = LINEAR_PROBE);
+        CRP get_policy();
+        int insert(int);
         void Print_Table(ofstream &);
         void make_clean();
         ~Hash();

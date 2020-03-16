@@ -19,8 +19,8 @@ using namespace std;
 void open_files(ifstream &, ifstream &, ofstream &);
 void close_files(ifstream &, ifstream &, ofstream &);
 float avg_probes(const vector<int> &);
-void insert_data(Hash &, Hash::CRP, vector<int> &, ifstream &);
-void print_header(Hash::CRP, float, ofstream &);
+void insert_data(Hash &, vector<int> &, ifstream &);
+void print_header(float, CRP, ofstream &);
 
 int main()
 {
@@ -32,18 +32,18 @@ int main()
     // Open files
     ifstream small_input, big_input;
     ofstream outfile;
+    open_files(small_input, big_input, outfile);
 
-    // Create a hash table of size 31 for initial testing
-    Hash linear_66(311);
-    Hash linear_80(311);
-    Hash double_66(311);
-    Hash double_80(311);
+    // Create hash tables of size 311
+    Hash linear_66(311, LINEAR_PROBE);
+    Hash linear_80(311, LINEAR_PROBE);
+    Hash double_66(311, DOUBLE_PROBE);
+    Hash double_80(311, DOUBLE_PROBE);
 
-    insert_data(linear_66, Hash::LINEAR_PROBE, lin_66_probes, small_input);
-    insert_data(linear_80, Hash::LINEAR_PROBE, lin_80_probes, big_input);
-    insert_data(double_66, Hash::DOUBLE_PROBE, double_66_probes, small_input);
-    insert_data(double_80, Hash::DOUBLE_PROBE, double_80_probes, big_input);
-
+    insert_data(linear_66, lin_66_probes, small_input);
+    insert_data(linear_80, lin_80_probes, big_input);
+    insert_data(double_66, double_66_probes, small_input);
+    insert_data(double_80, double_80_probes, big_input);
 
     // Find average number of linear probes
     avg_linear_66 = avg_probes(lin_66_probes);
@@ -53,12 +53,12 @@ int main()
     avg_double_80 = avg_probes(double_80_probes);
 
     // Print the header
-    print_header(Hash::LINEAR_PROBE, avg_linear_66, outfile);
+    print_header(avg_linear_66, linear_66.get_policy(), outfile);
     // Print the table
     linear_66.Print_Table(outfile);
 
     // Print the header
-    print_header(Hash::DOUBLE_PROBE, avg_double_66, outfile);
+    print_header(avg_double_66, double_66.get_policy(), outfile);
     // Print the table
     double_66.Print_Table(outfile);
 
@@ -69,8 +69,8 @@ int main()
 
 void open_files(ifstream &small_input, ifstream &big_input, ofstream &outfile)
 {
-    small_input.open("random205.txt");
-    big_input.open("random250.txt");
+    small_input.open("loop1_random205.txt");
+    big_input.open("loop1_random250.txt");
     outfile.open("output.txt");
 }
 
@@ -105,46 +105,27 @@ float avg_probes(const vector<int> &probe_table)
 
 //***************************************************************************
 //  function: insert_data
-//  arguments: Hash &, Hash::CRP, vector<int> &, ifstream &
+//  arguments: Hash &, vector<int> &, ifstream &
 //  returns: void
 //  description: The insert_data function inserts integer keys into a hash
 //  table using random data taken from the input file.
 //***************************************************************************
-void insert_data(Hash &table, Hash::CRP policy, vector<int> &probe_table, 
-    ifstream &input)
+void insert_data(Hash &table, vector<int> &probe_table, ifstream &input)
 {
     int temp, probes;
 
-    // Though the while loop is duplicated and looks messy, this layout
-    // ensures only one if/else comparison is necesssary rather than checking
-    // the collision resolution policy at the start of each loop iteration.
-    if (policy == Hash::LINEAR_PROBE)
+    while(input >> temp)
     {
-        while(input >> temp)
-        {
-            // Insert key and count probes
-            probes = table.insert(temp, table.LINEAR_PROBE);
-            // Add number of probes to the probe table
-            probe_table.push_back(probes);
-        }
+        // Insert key and count probes
+        probes = table.insert(temp);
+        // Add number of probes to the probe table
+        probe_table.push_back(probes);
     }
-    else if (policy == Hash::DOUBLE_PROBE)
-    {
-        while(input >> temp)
-        {
-            // Insert key and count probes
-            probes = table.insert(temp, table.DOUBLE_PROBE);
-            // Add number of probes to the probe table
-            probe_table.push_back(probes);
-        }
-    }
-    else
-        cout << "Invalid collision resolution policy\n";
 }
 
 //***************************************************************************
 //  function: print_header
-//  arguments: Hash::CRP, float, ofstream &
+//  arguments: float, CRP, ofstream &
 //  returns: void
 //  description: The print_header function prints the statistics for the
 //  appropriate table depending upon the Collision Resolution Policy passed
@@ -152,15 +133,15 @@ void insert_data(Hash &table, Hash::CRP policy, vector<int> &probe_table,
 //  print_header function is intended to be called immediately before
 //  invoking the Hash object's internal print function.
 //***************************************************************************
-void print_header(Hash::CRP policy, float avg_probes, ofstream &outfile)
+void print_header(float avg_probes, CRP policy, ofstream &outfile)
 {
     outfile << fixed << setprecision(3);
 
     outfile << left << setw(12) << "Hash Table" << setw(5) << "CRP: ";
         // Print header based on Collision Resolution Policy
-        if (policy == Hash::LINEAR_PROBE)
+        if (policy == LINEAR_PROBE)
             outfile << "Linear Probing\n";
-        else if (policy == Hash::DOUBLE_PROBE)
+        else if (policy == DOUBLE_PROBE)
             outfile << "Double Hashing\n";
         else
             outfile << '\n';

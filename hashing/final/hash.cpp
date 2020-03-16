@@ -23,7 +23,7 @@ using namespace std;
 //  hash table if that value is greater than 0. If no value is passed to the
 //  constructor, it defaults to 0, in which case a table is not created.
 //***************************************************************************
-Hash::Hash(int size) 
+Hash::Hash(int size, CRP crp_policy) 
 {
     // Dynamically allocate a hash table of size passed to the constructor
     if (size > 0)
@@ -38,7 +38,21 @@ Hash::Hash(int size)
 
     // Save table size for convenience
     table_size = size;
+    // If no collision resolution policy is given, default to LINEAR_PROBE.
+    // No set_policy method is given to avoid using more than one collision
+    // resolution policy for a Hash object.
+    policy = crp_policy;
 }
+
+//***************************************************************************
+//  method: get_policy()
+//  arguments: none
+//  returns: CRP hash policy
+//  description: The get_policy() method returns the collision resolution
+//  policy used by the Hash object.
+//***************************************************************************
+CRP Hash::get_policy()
+{ return policy; }
 
 //***************************************************************************
 //  method: insert
@@ -50,7 +64,7 @@ Hash::Hash(int size)
 //  either invoke Lin_Probe when LINEAR_PROBE is passed or Double_Probe when
 //  DOUBLE_PROBE is passed.
 //***************************************************************************
-int Hash::insert(int key, CRP policy)
+int Hash::insert(int key)
 { 
     int probes;
     
