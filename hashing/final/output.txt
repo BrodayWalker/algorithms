@@ -3,6 +3,7 @@ Experiment #1
 ===============================
 
 Hash Table  CRP: Linear Probing
+Load factor: 66%
 Avg Probes: 1.776
 ===============================
 Location    Value        
@@ -322,6 +323,7 @@ Location    Value
 
 
 Hash Table  CRP: Linear Probing
+Load factor: 80%
 Avg Probes: 2.292
 ===============================
 Location    Value        
@@ -641,6 +643,7 @@ Location    Value
 
 
 Hash Table  CRP: Double Hashing
+Load factor: 66%
 Avg Probes: 1.585
 ===============================
 Location    Value        
@@ -960,6 +963,7 @@ Location    Value
 
 
 Hash Table  CRP: Double Hashing
+Load factor: 80%
 Avg Probes: 1.880
 ===============================
 Location    Value        
@@ -1283,6 +1287,7 @@ Experiment #2
 ===============================
 
 Hash Table  CRP: Linear Probing
+Load factor: 66%
 Avg Probes: 1.771
 ===============================
 Location    Value        
@@ -1602,6 +1607,7 @@ Location    Value
 
 
 Hash Table  CRP: Linear Probing
+Load factor: 80%
 Avg Probes: 2.280
 ===============================
 Location    Value        
@@ -1921,6 +1927,7 @@ Location    Value
 
 
 Hash Table  CRP: Double Hashing
+Load factor: 66%
 Avg Probes: 1.580
 ===============================
 Location    Value        
@@ -2240,6 +2247,7 @@ Location    Value
 
 
 Hash Table  CRP: Double Hashing
+Load factor: 80%
 Avg Probes: 1.968
 ===============================
 Location    Value        

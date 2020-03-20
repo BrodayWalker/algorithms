@@ -21,7 +21,7 @@ using namespace std;
 void close_files(ifstream &, ifstream &);
 float avg_probes(const vector<int> &);
 void insert_data(Hash &, vector<int> &, ifstream &);
-void print_header(float, CRP, ofstream &);
+void print_header(float, int, CRP, ofstream &);
 
 int main()
 {
@@ -99,17 +99,17 @@ int main()
         outfile << "===============================\n\n";
 
         // Print the linear tables
-        print_header(avg_linear_66, linear_66.get_policy(), outfile);
+        print_header(avg_linear_66, 66, linear_66.get_policy(), outfile);
         linear_66.Print_Table(outfile);
 
-        print_header(avg_linear_80, linear_80.get_policy(), outfile);
+        print_header(avg_linear_80, 80, linear_80.get_policy(), outfile);
         linear_80.Print_Table(outfile);
 
         // Print the double hashing tables
-        print_header(avg_double_66, double_66.get_policy(), outfile);
+        print_header(avg_double_66, 66, double_66.get_policy(), outfile);
         double_66.Print_Table(outfile);
 
-        print_header(avg_double_80, double_80.get_policy(), outfile);
+        print_header(avg_double_80, 80, double_80.get_policy(), outfile);
         double_80.Print_Table(outfile);
 
         // Reset hash objects and probe vectors
@@ -185,7 +185,7 @@ void insert_data(Hash &table, vector<int> &probe_table, ifstream &input)
 
 //***************************************************************************
 //  function: print_header
-//  arguments: float, CRP, ofstream &
+//  arguments: float, int, CRP, ofstream &
 //  returns: void
 //  description: The print_header function prints the statistics for the
 //  appropriate table depending upon the Collision Resolution Policy passed
@@ -193,7 +193,7 @@ void insert_data(Hash &table, vector<int> &probe_table, ifstream &input)
 //  print_header function is intended to be called immediately before
 //  invoking the Hash object's internal print function.
 //***************************************************************************
-void print_header(float avg_probes, CRP policy, ofstream &outfile)
+void print_header(float avg_probes, int load_factor, CRP policy, ofstream &outfile)
 {
     outfile << fixed << setprecision(3);
 
@@ -206,6 +206,7 @@ void print_header(float avg_probes, CRP policy, ofstream &outfile)
         else
             outfile << '\n';
 
+        outfile << "Load factor: " << load_factor << "%\n";
         outfile << "Avg Probes: " << avg_probes << '\n';
         outfile << "===============================\n";
 }
