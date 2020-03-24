@@ -3,6 +3,13 @@
 //  Dr. Halverson
 //  CMPS 5243
 //  March 24, 2020
+//  This program is the final version of the hashing experiment. When the 
+//  program is run, four different hash tables are tested with varying load
+//  factors. Once all data is inserted into the tables, the average probe
+//  count is calculated. These results are used to show the difference in
+//  average probe count between hash tables using linear probing and double
+//  hashing for their collision resolution policy. The experiment is run two
+//  times using two sets of pseudo-random numbers.
 //***************************************************************************
 //  Compilation: g++ -std=c++11 main.cpp hash.cpp -o main.exe
 //  Execution: ./main.exe
