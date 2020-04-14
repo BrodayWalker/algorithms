@@ -43,7 +43,7 @@ int main()
 
 void bfs(int u)
 {
-    u = q.front;
+    u = q.front();
     q.pop();
 
     while(!q.empty())
