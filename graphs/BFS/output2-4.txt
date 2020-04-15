@@ -1,0 +1,19 @@
+Adjacency-Matrix Representation of Graph from Figure 22.2(a)
+===========================================
+Vertex 1: 0 1 0 1 0 0 
+Vertex 2: 0 0 0 0 1 0 
+Vertex 3: 0 0 0 0 1 1 
+Vertex 4: 0 1 0 0 0 0 
+Vertex 5: 0 0 0 1 0 0 
+Vertex 6: 0 0 0 0 0 1 
+===========================================
+
+
+BFS Results
+Vertex    Parent    Distance
+     1        -1    Infinity
+     2         4           3
+     3        -1           0
+     4         5           2
+     5         3           1
+     6         3           1

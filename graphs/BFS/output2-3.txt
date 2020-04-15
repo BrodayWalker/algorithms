@@ -1,0 +1,19 @@
+Adjacency-List Representation of Graph from Figure 22.2(a)
+===========================================
+Vertex 1: 2 4 
+Vertex 2: 5 
+Vertex 3: 5 6 
+Vertex 4: 2 
+Vertex 5: 4 
+Vertex 6: 6 
+===========================================
+
+
+BFS Results
+Vertex    Parent    Distance
+     1        -1    Infinity
+     2         4           3
+     3        -1           0
+     4         5           2
+     5         3           1
+     6         3           1
