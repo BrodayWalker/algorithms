@@ -5,9 +5,9 @@
 //  April 18, 2020
 //  Purpose: 
 //
-//  Compilation Instructions: 
-//  How to run:
-//  Output:
+//  Compilation Instructions: g++ AdjListGen.cpp -o AdjListGen.exe -std=c++11
+//  How to run: ./AdjListGen.exe
+//  Output: Printed to OutputAdjLists.txt
 //***************************************************************************
 
 #include <iostream>
@@ -15,14 +15,16 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
 int main()
 {
     // Declarations
-    int u, v;
-    vector<vector<int>> adjList;
+    string u, v;
+    map<string, vector<string>> adjList;
+    map<string, vector<string>>::iterator itor;
 
     // Input and output file declarations
     ifstream infile;
@@ -30,51 +32,39 @@ int main()
     ofstream outfile;
     outfile.open("OutputAdjLists.txt");
 
-    // Read in the data pairs
-    while(infile >> u >> v)
+    // Read in all the edges between vertices
+    while (infile >> u >> v)
     {
-    
-        // Resize the adjacency list vector if necessary because he number of
-        // vertices in the graph is not always known before building the 
-        // adjacency list
-
-        // Note: We must check for greater than or equal to because sub-
-        // scripting starts at 0. If the adjList size is 10 and we try
-        // to subscript adjList[10], we are going to have a bad time.
-        // This is also the reason why the resize operation uses the vertex
-        // ID plus 1.
-        if(u >= adjList.size()  || v >= adjList.size())
-        {
-            // Resize the adjacency list to hold the largest vertex ID
-            if(u >= v)
-                adjList.resize(u + 1);
-            else
-                adjList.resize(v + 1);
-        }
-           
-        // Add the edge to both vertices' adjacency list because this is
-        // an undirected graph
+        // Add the adjacent vertices to their respective list
         adjList[u].push_back(v); // U -> V
         adjList[v].push_back(u); // V -> U
     }
 
+    outfile << left << setw(12) << "Vertices" << setw(12) << "Adjacent" << '\n';
 
-    // Print the column labels
-    outfile << setw(12) << left << "Vertices" << setw(8) << "Adjacent" << '\n';
-    // Print the adjacency list
-    for(int i = 0; i < adjList.size(); i++)
+    // Set the iterator to the beginning of the map
+    itor = adjList.begin();
+    while(itor != adjList.end())
     {
-        outfile << setw(12) << i;
+        // Consider the edge U -> V
+        // itor->first represents vertex U
+        outfile << setw(12) << itor->first;
+        for(int i = 0; i < itor->second.size(); i++)
+        {
+            // itor->second is a vector of strings
+            // itor->second[i] is the ith vertex in U's adjacency list
+            outfile << itor->second[i];
 
-        for(int j = 0; j < adjList[i].size(); j++)
-            outfile << adjList[i][j] << " ";
-        
-        outfile << '\n';
+            // This check is for formatting purposes only
+            if (i != itor->second.size() - 1)
+                outfile << ", ";
+            else
+                outfile << '\n';
+        }
+
+        // Increment the iterator
+        itor++;    
     }
-
-
-
-
 
     // Close up shop
     infile.close();
