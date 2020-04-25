@@ -2,7 +2,7 @@
 //  Broday Walker
 //  Dr. Halverson
 //  CMPS 5243 - Algorithm Analysis
-//  April 18, 2020
+//  April 26, 2020
 //  Purpose: 
 //
 //  Compilation Instructions: g++ AdjListGen.cpp -o AdjListGen.exe -std=c++11
@@ -50,17 +50,10 @@ int main()
         // itor->first represents vertex U
         outfile << setw(12) << itor->first;
         for(int i = 0; i < itor->second.size(); i++)
-        {
             // itor->second is a vector of strings
             // itor->second[i] is the ith vertex in U's adjacency list
-            outfile << itor->second[i];
-
-            // This check is for formatting purposes only
-            if (i != itor->second.size() - 1)
-                outfile << ", ";
-            else
-                outfile << '\n';
-        }
+            outfile << itor->second[i] << " ";
+        outfile << '\n';
 
         // Increment the iterator
         itor++;    
