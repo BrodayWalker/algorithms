@@ -10,154 +10,141 @@
 //  Output: Printed to OutputAdjMatrix.txt
 //***************************************************************************
 
-#include <algorithm> // for lexicographical_compare
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <vector>
 #include <string>
-#include <unordered_map>
+#include <map>
+#include <set>
 
 using namespace std;
 
 int main()
 {
-    // Declarations
-    string u, v, start, end;
-    vector<string> keys;
-    unordered_map<string, vector<string>> adjMat;
-    unordered_map<string, vector<string>>::iterator itor;
+    // A variable to control the number of times datasets processed
+    int dataset = 1;
 
-    // Input and output file declarations
-    ifstream infile;
-    infile.open("small_data.txt");
+    // Open the output text file
     ofstream outfile;
     outfile.open("OutputAdjMatrix.txt");
 
-
-    // Read in all the edges between vertices
-    while (infile >> u >> v)
+    while(dataset <= 3)
     {
-
-        // Add the adjacent vertices to their respective list in the matrix
-        adjMat[u].push_back(v); // U -> V
-        adjMat[v].push_back(u); // V -> U
-    }
-
-    itor = adjMat.begin();
-    start = itor->first;
-    end = itor->first;
-
-    while(itor != adjMat.end())
-    {
-        if(start.compare(itor->first) )
-            start = itor->first;
-
-        if(itor->first > end)
-            end = itor->first;
-
-        itor++;
-    }
-
-    /*
-    // Get the lexicographically smallest string
-    start = adjMat.begin()->first;
-    // Keep in mind that adjMat.end() is actually one memory location beyond 
-    // the end of adjMat
-    itor = adjMat.end();
-    // itor is decremented to point to the real last element in adjMat
-    end = (--itor)->first;
-    */
-
-    cout << start << " " << end << '\n';
-
-
-
-    // Build a list of vertices between the smallest vertex to the largest vertex 
-    // in lexicographically-ascending order
-
-    
-    // Generate a list of vertices between the smallest vertex and the largest
-    // This is necessary as it is not possible to increment a whole string, but
-    // is is possible to increment a character; luckily, strings are arrays of
-    // characters. This while loop includes some extra logic to handle keys that
-    // are strings made up of numbers or letters but not both mixed together.
-
-    //
-    //  lexicographical_compare(start.begin(), start.end(), end.begin(), end.end()) != 0
-    //
-    //  start.compare(end) != 0
-    while(start.compare(end) != 0)
-    {
-        int last_elem = start.size() - 1;
+        // Declarations for each matrix
+        string u, v, start, end;
+        map<string, set<string>> adjMat;
+        // The naming scheme for the iterators is intended to follow the 
+        // U -> V pattern from the textbook
+        map<string, set<string>>::iterator u_itor; // Iterator for the vertices
+        map<string, set<string>>::iterator outer_row;
+        set<string>::iterator v_itor; // Iterator for adjacent vertices
         
-        // Insert the key into the vector of keys
-        // These are used later to print column and row headers
-        keys.push_back(start);
+        // Input file declarations
+        ifstream infile;
 
-        // Some extra logic for increments the string represenation of numbers
-        if(start[last_elem] == '9')
-        {
-            int rollover = last_elem;
-            // Find the most significant digit that is not a nine and increment it
-            while(start[rollover] == '9' && rollover >= 0)
-                rollover--;
-            // If rollover == -1, all characters that make up the string are nines
-            // This would happen if, for example, start = "999" and we want to make
-            // start = "1000"
-            if(rollover == -1)
-            {
-                start[0] = '1';
-
-                for(int i = 1; i <= last_elem; i++)
-                    start[i] = '0';
-
-                start.push_back('0');
-            }
-            else 
-            {
-                // Consider the string start = "1299"
-                // Rollover would point to start[1]
-                // Start[rollover] goes from '2' to '3'
-                // Zero out all less significant digits
-                // Result is start = "1300"
-                start[rollover]++;
-                for(int i = rollover + 1; i <= last_elem; i++)
-                    start[i] = '0';
-            }
-        }
+        if(dataset == 1)
+            infile.open("dataset1.txt");
+        else if(dataset == 2)
+            infile.open("dataset2.txt");
         else
-            start[last_elem]++;
+            infile.open("dataset3.txt");
+        
+        // Read in all the edges between vertices
+        while (infile >> u >> v)
+        {
+            // Insert the adjacent vertices into their respective set in 
+            // the matrix
+            // C++ sets are ordered and are typically implemented as red-black 
+            // trees under the hood
+            // The set container is not as fast as an unordered_set C++ container, 
+            // but the ordering facilitates a simpler printing scheme later in 
+            // the program
 
-    }
-    keys.push_back(end);
-    
-    for(auto x : keys)
-        outfile << x << " ";
-    outfile << '\n';
+            adjMat[u].insert(v); // U -> V
+            adjMat[v].insert(u); // V -> U
+        }
 
+        u_itor = adjMat.begin(); // Points to the beginning of the map container
 
-    outfile << left;
+        // Title
+        outfile << "ADJACENCY MATRIX " << dataset << '\n';
+        outfile << "===============================================\n";
 
-    // Set the iterator to the beginning of the map
-    itor = adjMat.begin();
-    while(itor != adjMat.end())
-    {
-        // Consider the edge U -> V
-        // itor->first represents vertex U
-        outfile << setw(12) << itor->first;
-        for(int i = 0; i < itor->second.size(); i++)
-            // itor->second is a vector of strings
-            // itor->second[i] is the ith vertex in U's adjacency list
-            outfile << itor->second[i] << " ";
+        // For formatting the column headers
+        outfile << setw(4) << " ";
+
+        // Print the column headers
+        while(u_itor != adjMat.end())
+        {
+            outfile << setw(4) << u_itor->first;
+            u_itor++;
+        }
         outfile << '\n';
 
-        // Increment the iterator
-        itor++;    
+        // Set the iterator back to the beginning of the map
+        u_itor = adjMat.begin();
+
+        // adjMat.end() is one memory location beyond the end of the container,
+        // so the loop runs from the beginning of the container to the end + 1
+        // to allow for easy processing of the last location as well
+        while(u_itor != adjMat.end())
+        {
+            // The outer_row iterator initially points to the first location in 
+            // the map that holds the vertices
+            // The value pointed to by outer_row will be compared to the value 
+            // pointed to below by v_itor. If the value of both pointers is equal, 
+            // the edge exists and a 1 is printed. In that case, both pointers are 
+            // incremented. If the values pointed to by both are not equal, no 
+            // edge exists, so a 0 is printed. In that case, only the outer_row 
+            // pointer is incremented.
+            outer_row = adjMat.begin();
+            
+            // Consider the edge U -> V
+            // itor->first represents vertex U
+            outfile << setw(4) << u_itor->first;
+
+            // Point v_itor to the beginning of vertex U's adjacency matrix
+            // In other words, this points to what will be the beginning of 
+            // the row of the adjacency matrix for vertex U.
+            v_itor = u_itor->second.begin();
+            
+
+            // While not all vertices have been compared
+            while(outer_row != adjMat.end())
+            {   
+                // Different syntax for each pointer is used as v_itor is pointing
+                // to a set container only while outer_row is pointing to a map
+                // of pairs of strings and sets of strings
+
+                // The value of v_itor will be an adjacent vertex to vertex U
+                // The value of outer_row->first will be one of the vertices
+                // in the set of all the vertices in this graph
+                if(*v_itor == outer_row->first)
+                {
+                    outfile << setw(4) << "1";
+                    v_itor++;
+                }
+                else
+                    outfile << setw(4) << "0";
+                
+                outer_row++;
+            }
+            outfile << '\n';
+
+            // Go to the next vertex that needs a matrix row generated
+            u_itor++;    
+        }
+
+        outfile << "===============================================\n\n\n";
+
+        // Close this input file
+        infile.close();
+
+        dataset++;
     }
 
-    // Close up shop
-    infile.close();
     outfile.close();
     return 0;
 }
