@@ -3,7 +3,12 @@
 //  Dr. Halverson
 //  CMPS 5243 - Algorithm Analysis
 //  April 26, 2020
-//  Purpose: 
+//  Purpose: This program reads input from three different data files which
+//  hold adjacency data for vertices of an undirected graph. Using the
+//  adjacency data, an adjacency-matrix representation of each input graph is
+//  printed to the output filed called OutputAdjMatrix.txt. To successfully
+//  run the program, input files dataset1.txt, dataset2.txt, and dataset3.txt
+//  are required.
 //
 //  Compilation Instructions: g++ AdjMatrixGen.cpp -o AdjMatrixGen.exe -std=c++11
 //  How to run: ./AdjMatrixGen.exe
