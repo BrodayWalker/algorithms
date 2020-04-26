@@ -22,45 +22,67 @@ using namespace std;
 int main()
 {
     // Declarations
-    string u, v;
-    map<string, vector<string>> adjList;
-    map<string, vector<string>>::iterator itor;
+    int dataset = 1;
 
-    // Input and output file declarations
-    ifstream infile;
-    infile.open("small_data.txt");
+    // Declare and open output file
     ofstream outfile;
     outfile.open("OutputAdjLists.txt");
 
-    // Read in all the edges between vertices
-    while (infile >> u >> v)
+    while(dataset <= 3)
     {
-        // Add the adjacent vertices to their respective list
-        adjList[u].push_back(v); // U -> V
-        adjList[v].push_back(u); // V -> U
+        // Graph declarations
+        string u, v;
+        map<string, vector<string>> adjList;
+        map<string, vector<string>>::iterator itor;
+
+        // Input file declaration
+        ifstream infile;
+
+        // Open and use every input file once 
+        if(dataset == 1)
+            infile.open("dataset1.txt");
+        else if(dataset == 2)
+            infile.open("dataset2.txt");
+        else
+            infile.open("dataset3.txt");
+        
+        // Read in all the edges between vertices
+        while (infile >> u >> v)
+        {
+            // Add the adjacent vertices to their respective list
+            adjList[u].push_back(v); // U -> V
+            adjList[v].push_back(u); // V -> U
+        }
+
+        outfile << "ADJACENCY LIST " << dataset << '\n';
+        outfile << "------------------------------\n";
+        outfile << left << setw(10) << "Vertices" << setw(12) << "Adjacent" << '\n';
+
+        // Set the iterator to the beginning of the map
+        itor = adjList.begin();
+        while(itor != adjList.end())
+        {
+            // Consider the edge U -> V
+            // itor->first represents vertex U
+            outfile << setw(3) << " " << setw(7) << itor->first;
+            for(int i = 0; i < itor->second.size(); i++)
+                // itor->second is a vector of strings
+                // itor->second[i] is the ith vertex in U's adjacency list
+                outfile << itor->second[i] << " ";
+            outfile << '\n';
+
+            // Increment the iterator
+            itor++;    
+        }
+
+        outfile << "\n\n";
+
+        // Close this input file
+        infile.close();
+
+        dataset++;
     }
 
-    outfile << left << setw(12) << "Vertices" << setw(12) << "Adjacent" << '\n';
-
-    // Set the iterator to the beginning of the map
-    itor = adjList.begin();
-    while(itor != adjList.end())
-    {
-        // Consider the edge U -> V
-        // itor->first represents vertex U
-        outfile << setw(12) << itor->first;
-        for(int i = 0; i < itor->second.size(); i++)
-            // itor->second is a vector of strings
-            // itor->second[i] is the ith vertex in U's adjacency list
-            outfile << itor->second[i] << " ";
-        outfile << '\n';
-
-        // Increment the iterator
-        itor++;    
-    }
-
-    // Close up shop
-    infile.close();
     outfile.close();
     return 0;
 }

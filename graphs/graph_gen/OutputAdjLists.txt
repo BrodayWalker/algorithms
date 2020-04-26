@@ -1,5 +1,42 @@
-Vertices    Adjacent    
-1           3, 2
-2           3, 1
-3           2, 4, 1
-4           3
+ADJACENCY LIST 1
+------------------------------
+Vertices  Adjacent    
+   A      B C 
+   B      D A E 
+   C      G A F 
+   D      B 
+   E      H B 
+   F      C 
+   G      C 
+   H      E 
+
+
+ADJACENCY LIST 2
+------------------------------
+Vertices  Adjacent    
+   1      9 5 4 
+   10     3 4 
+   2      6 4 
+   3      5 10 8 
+   4      2 10 1 5 
+   5      3 1 8 4 
+   6      2 8 9 
+   7      8 
+   8      6 7 3 5 
+   9      1 6 
+
+
+ADJACENCY LIST 3
+------------------------------
+Vertices  Adjacent    
+   11     26 
+   13     5 19 
+   18     26 9 
+   19     13 9 
+   23     24 
+   24     23 
+   26     9 11 18 
+   5      13 
+   9      26 18 19 
+
+
